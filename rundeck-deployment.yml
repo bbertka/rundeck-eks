@@ -1,0 +1,59 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: rundeckpro
+  namespace: default
+  labels:
+    app: rundeckpro
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rundeckpro
+  template:
+    metadata:
+      labels:
+        app: rundeckpro
+    spec:
+      containers:
+      - name: rundeck
+        image: rundeckpro/enterprise:3.3.8
+        env:
+        - name: RUNDECK_GRAILS_URL
+          value: "http://localhost"
+        - name: RUNDECK_DATABASE_DRIVER
+          value: "org.mariadb.jdbc.Driver"
+        - name: RUNDECK_DATABASE_URL
+          value: "jdbc:mysql://mysql.default.svc.cluster.local:3306/rundeckdb?autoReconnect=true&useSSL=false"
+        - name: RUNDECK_DATABASE_USERNAME
+          value: "rundeck"
+        - name: RUNDECK_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-rundeckuser
+              key: password
+        - name: RUNDECK_PLUGIN_CLUSTER_HEARTBEAT_CONSIDERDEAD
+          value: "120"
+        - name: RUNDECK_PLUGIN_CLUSTER_AUTOTAKEOVER_SLEEP
+          value: "10"
+        - name: RUNDECK_PLUGIN_CLUSTER_REMOTEEXECUTION_ENABLED
+          value: "false"
+        ports:
+        - containerPort: 4440
+        volumeMounts:
+          - name: data
+            mountPath: /home/rundeck/server/data
+          - name: logs
+            mountPath: /home/rundeck/server/logs
+          - name: etc
+            mountPath: /home/rundeck/etc
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: rundeck-pv-claim-data
+      - name: logs
+        persistentVolumeClaim:
+          claimName: rundeck-pv-claim-logs
+      - name: etc
+        persistentVolumeClaim:
+          claimName: rundeck-pv-claim-etc
