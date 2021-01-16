@@ -12,7 +12,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-35c4814d::fsap-0e720sdfsdf
+    volumeHandle: fs-41dd9839::fsap-06c7a7f26e8436dc8
 
 ---
 apiVersion: v1
@@ -41,7 +41,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-35c4814d::fsap-0b06sdfsdf01cef
+    volumeHandle: fs-41dd9839::fsap-0df507dac9b21a7a4
 
 ---
 apiVersion: v1
@@ -56,32 +56,3 @@ spec:
     requests:
       storage: 5Gi
 
-
----
-apiVersion: "v1"
-kind: "PersistentVolume"
-metadata:
-  name: "rundeck-pv-etc"
-spec:
-  capacity:
-    storage: "5Gi"
-  accessModes:
-    - "ReadWriteMany"
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: efs-sc
-  csi:
-    driver: efs.csi.aws.com
-    volumeHandle: fs-35c4814d::fsap-00e4sdfsdff
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: rundeck-pv-claim-etc
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: efs-sc
-  resources:
-    requests:
-      storage: 5Gi
