@@ -20,7 +20,7 @@ spec:
         image: rundeckpro/enterprise:3.3.8
         env:
         - name: RUNDECK_GRAILS_URL
-          value: "http://localhost"
+          value: "http://58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com"
         - name: RUNDECK_DATABASE_DRIVER
           value: "org.mariadb.jdbc.Driver"
         - name: RUNDECK_DATABASE_URL
@@ -45,8 +45,12 @@ spec:
             mountPath: /home/rundeck/server/data
           - name: logs
             mountPath: /home/rundeck/server/logs
-          - name: etc
-            mountPath: /home/rundeck/etc
+          - name: license
+            mountPath: /home/rundeck/etc/rundeckpro-license.key
+            subPath: rundeckpro-license.key
+          - name: acl 
+            mountPath: /home/rundeck/etc/admin-role.aclpolicy
+            subPath: admin-role.aclpolicy
       volumes:
       - name: data
         persistentVolumeClaim:
@@ -54,6 +58,15 @@ spec:
       - name: logs
         persistentVolumeClaim:
           claimName: rundeck-pv-claim-logs
-      - name: etc
-        persistentVolumeClaim:
-          claimName: rundeck-pv-claim-etc
+      - name: license
+        secret:
+          secretName: rundeckpro-license
+          items:
+          - key: rundeckpro-license.key
+            path: rundeckpro-license.key
+      - name: acl
+        secret:
+          secretName: rundeckpro-admin-acl
+          items:
+          - key: admin-role.aclpolicy
+            path: admin-role.aclpolicy
