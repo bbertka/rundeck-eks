@@ -10,14 +10,13 @@ image:images/rundeck.png[]
 This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterprise[Rundeck Pro].  After working through this lab you will have a web accessable deployment of Rundeck running on Amazon EKS Kubernetes, backed by MySQL DB and EFS. This is a workable architecture that can easily be used as a basis for deploying a fully HA production Rundeck cluster with further consideration for cluster scaling and object storage.
 
 * link:https://github.com/bbertka/rundeck-eks#part-1---preparing-for-installation[Part 1 - Install Readiness]
-* link:https://github.com/bbertka/rundeck-eks#part-2---deploy-an-amazon-eks-cluster[Part 2 - Deploy EKS Cluster]
+* link:https://github.com/bbertka/rundeck-eks#part-2---deploy-eks-cluster[Part 2 - Deploy EKS Cluster]
 * link:https://github.com/bbertka/rundeck-eks#part-3---setup-cluster-ingress[Part 3 - Setup ALB Ingress for your Cluster]
-* link:https://github.com/bbertka/rundeck-eks#part-4---set-up-persistent-file-system[Part 4 - Setup EFS for file persistence]
-* link:https://github.com/bbertka/rundeck-eks#part-5---deploy-rundeck-volumes[Part 5 - Deploy Rundeck Storage & MySQL DB Volumes]
+* link:https://github.com/bbertka/rundeck-eks#part-4---setup-persistent-file-system[Part 4 - Setup EFS for file persistence]
+* link:https://github.com/bbertka/rundeck-eks#part-5---deploy-volumes[Part 5 - Deploy Rundeck Storage & MySQL DB Volumes]
 * link:https://github.com/bbertka/rundeck-eks#part-6---deploy-mysql[Part 6 - Deploy MySQL]
-* link:https://github.com/bbertka/rundeck-eks#part-7---deploy-rundeck[Part 7 - Deploy Rundeck]
-* link:https://github.com/bbertka/rundeck-eks#part-8---connect-to-rundeck[Part 8 - Connect to Rundeck]
-
+* link:https://github.com/bbertka/rundeck-eks#part-8---setup-rundeck-ingress[Part 7 - Create Rundeck ALB]
+* link:https://github.com/bbertka/rundeck-eks#part-9---deploy-rundeck[Part 8 - Deploy Rundeck]
 
 == Assumptions
 * You already have an AWS account with typical permissions to create EC2 resources, EKS clusters, EFS file systems
@@ -100,7 +99,7 @@ $ kubectl version --client
     }
 ----
 
-[#deploy-an-amazon-eks-cluster]
+[#deploy-eks-cluster]
 = Part 2 - Deploy an Amazon EKS Cluster
 In order to deploy the Docker image for Rundeck Pro, we need an EKS cluster to work with.  There are two options for us for backing an EKS cluster, Fargate, or your own managed VPC nodes.  Since Rundeck Pro needs file persistence in order to write logs and configuration data, we are opting for a managed EC2 backend deployment to allow persistence with EFS.
 
@@ -226,7 +225,7 @@ alb-ingress-controller-646d767ccf-4h624   1/1     Running   0          12s
 ----
 
 
-[#set-up-persistent-file-system]
+[#setup-persistent-file-system]
 = Part 4 - Set up Persistent File System
 
 . Get your VPC ID for your cluster (again)
@@ -377,8 +376,34 @@ $ kubectl create secret generic mysql-rundeckuser --from-file=./password
 $ kubectl apply -f mysql-deployment.yaml
 ----
 
+[#setup-rundeck-ingress]
+= Part 7 - Create Rundeck Ingress ALB
+Before we deploy Rundeck, we need to create an ALB and use this URL in the deployment manifest
+
+. Create the ALB Ingress
++
+----
+$ kubectl apply -f rundeck-ingress.yml
+ingress.extensions/rundeck-ingress created
+----
+
+. Obtain the ALB Ingress address
++
+----
+$ kubectl get ingress
+NAME              CLASS    HOSTS   ADDRESS                                                                 PORTS   AGE
+rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com   80      3d1h
+----
+
+. Add the Ingress URL to the Rundeck Deployment manifest
++
+----
+        - name: RUNDECK_GRAILS_URL
+          value: "http://58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com"
+----
+
 [#deploy-rundeck]
-= Part 7 - Deploy Rundeck with Default ACL
+= Part 8 - Deploy Rundeck
 
 . Create Default Rundeck ACL from secrets
 +
@@ -421,26 +446,6 @@ NAME                                    DESIRED   CURRENT   READY   AGE
 replicaset.apps/mysql-7575f75b59        1         1         1       2d20h
 replicaset.apps/rundeckpro-794cd8c786   1         1         1       2d14h
 
-----
-
-
-[#connect-to-rundeck]
-= Part 8 - Connect to Rundeck
-Now that your Rundeck deployment is sucessfully running on EKS with an EFS backed persistent volume, we need to create the ALB ingress we will use to connect to the instance in our browser.
-
-. Create the ALB Ingress 
-+
-----
-$ kubectl apply -f rundeck-ingress.yml
-ingress.extensions/rundeck-ingress created
-----
-
-. Obtain the ALB Ingress address
-+
-----
-$ kubectl get ingress
-NAME              CLASS    HOSTS   ADDRESS                                                                 PORTS   AGE
-rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com   80      3d1h
 ----
 
 After a few minutes, open the browser and connect to your instance on the ALB address, if prompted for a password, use the default for admin.
