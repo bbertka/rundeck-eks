@@ -114,14 +114,14 @@ $ cp ~/eks.pub . && chmod 600 eks.pub
 +
 ----
 $ eksctl create cluster \
- --name code-server \
- --version 1.17 \
+ --name rundeck \
+ --version 1.18 \
  --region us-east-2 \
  --nodegroup-name linux-nodes \
- --node-type t3.small \
- --nodes 3 \
+ --node-type t2.medium \
+ --nodes 1 \
  --nodes-min 1 \
- --nodes-max 3 \
+ --nodes-max 1 \
  --ssh-access \
  --ssh-public-key eks.pub \
  --managed
@@ -308,7 +308,7 @@ storageclass.storage.k8s.io/efs-sc created
 . View Storage Classes
 +
 ----
-$ kubectl get storageclass -n code-server
+$ kubectl get storageclass
 NAME            PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 efs-sc          efs.csi.aws.com         Delete          Immediate              false                  13m
 gp2 (default)   kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   false                  4h26m
