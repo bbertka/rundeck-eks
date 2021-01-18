@@ -2,8 +2,6 @@
 
 Adapted from: https://github.com/rundeck/docker-zoo/tree/master/kubernetes
 
-Note: currently this Readme is being refactored from original docker-zoo repo which is shown here for reference:
-
 image:images/rundeck.png[]
 
 == About
