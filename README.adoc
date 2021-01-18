@@ -1,4 +1,4 @@
-= Rundeck Pro Workshop with AWS EKS Kubernetes
+= Rundeck Pro on EKS
 
 Adapted from: https://github.com/rundeck/docker-zoo/tree/master/kubernetes
 
