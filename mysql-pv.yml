@@ -12,7 +12,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-41dd9839::fsap-0579ed0ac909dcb74
+    volumeHandle: MYSQL_EFS_ID::MYSQL_EFS_ACCESSPOINT
 
 ---
 apiVersion: v1
