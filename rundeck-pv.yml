@@ -12,7 +12,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-41dd9839::fsap-06c7a7f26e8436dc8
+    volumeHandle: RUNDECK_EFS_ID::RUNDECK_EFS_ACCESSPOINT_DATA
 
 ---
 apiVersion: v1
@@ -41,7 +41,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-41dd9839::fsap-0df507dac9b21a7a4
+    volumeHandle: RUNDECK_EFS_ID::RUNDECK_EFS_ACCESSPOINT_LOGS
 
 ---
 apiVersion: v1
@@ -55,4 +55,3 @@ spec:
   resources:
     requests:
       storage: 5Gi
-
