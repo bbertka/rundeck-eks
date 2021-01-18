@@ -75,7 +75,7 @@ $ eksctl version
 0.25.0
 ----
 
-== Setup kubectl & HELM
+== Setup kubectl
 . Download and Install kubectl
 +
 ----
@@ -99,17 +99,12 @@ $ kubectl version --client
     Platform:"darwin/amd64"
     }
 ----
-. Install HELM
-+
-----
-brew install helm
-----
 
 [#deploy-an-amazon-eks-cluster]
 = Part 2 - Deploy an Amazon EKS Cluster
 In order to deploy the Docker image for Rundeck Pro, we need an EKS cluster to work with.  There are two options for us for backing an EKS cluster, Fargate, or your own managed VPC nodes.  Since Rundeck Pro needs file persistence in order to write logs and configuration data, we are opting for a managed EC2 backend deployment to allow persistence with EFS.
 
- Download or copy your AWS public SSH key to your current directory and make sure the permissions are set securely.
+. Download or copy your AWS public SSH key to your current directory and make sure the permissions are set securely.
 +
 ----
 $ cp ~/eks.pub . && chmod 600 eks.pub
