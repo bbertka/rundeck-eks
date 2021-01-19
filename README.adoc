@@ -336,6 +336,12 @@ $ kubectl apply -f mysql-deployment.yaml
 [#deploy-rundeck]
 = Part 7 - Deploy Rundeck
 
+. Add rundeck License key as secret
++
+----
+$ kubectl create secret generic rundeckpro-license --from-file=./data/rundeckpro-license.key
+----
+
 . Create Default Rundeck ACL from secrets
 +
 ----
