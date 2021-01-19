@@ -148,7 +148,7 @@ NAME                                      READY   STATUS    RESTARTS   AGE
 alb-ingress-controller-646d767ccf-4h624   1/1     Running   0          12s
 ----
 
-.Create the Rundeck Service
+. Create the Rundeck Service
 +
 ----
 $ kubectl apply -f rundeck-service.yml
