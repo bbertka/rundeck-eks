@@ -177,8 +177,13 @@ rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-
           value: "http://58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com"
 ----
 
+. Find your Load Balancer Target group ARN by navigating to target groups and finding the one created for your cluster
 
-
+. Update LB Target Group Sticky Sessions using your ARN
++
+----
+aws elbv2 modify-target-group-attributes --target-group-arn arn:aws:elasticloadbalancing:us-east-2:370534301218:targetgroup/efe38dad-59f92a8e17feda5e044/e83e36c73687dda9 --attributes Key=stickiness.enabled,Value=true --attributes Key=stickiness.lb_cookie.duration_seconds,Value=3900
+----
 
 
 [#set-up-persistent-file-system]
