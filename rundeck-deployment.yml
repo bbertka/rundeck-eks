@@ -20,7 +20,7 @@ spec:
         image: rundeckpro/enterprise:3.3.8
         env:
         - name: RUNDECK_GRAILS_URL
-          value: "http://efe38dad-default-rundeckin-89de-1662671119.us-east-2.elb.amazonaws.com"
+          value: "http://RUNDECK_INGRESS_ELB_ADDRESS"
         - name: RUNDECK_DATABASE_DRIVER
           value: "org.mariadb.jdbc.Driver"
         - name: RUNDECK_DATABASE_URL
