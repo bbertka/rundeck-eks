@@ -183,6 +183,35 @@ rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-
 +
 ----
 aws elbv2 modify-target-group-attributes --target-group-arn arn:aws:elasticloadbalancing:us-east-2:370534301218:targetgroup/efe38dad-59f92a8e17feda5e044/e83e36c73687dda9 --attributes Key=stickiness.enabled,Value=true --attributes Key=stickiness.lb_cookie.duration_seconds,Value=3900
+
+{
+    "Attributes": [
+        {
+            "Key": "stickiness.enabled",
+            "Value": "true"
+        },
+        {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "300"
+        },
+        {
+            "Key": "stickiness.type",
+            "Value": "lb_cookie"
+        },
+        {
+            "Key": "stickiness.lb_cookie.duration_seconds",
+            "Value": "3900"
+        },
+        {
+            "Key": "slow_start.duration_seconds",
+            "Value": "0"
+        },
+        {
+            "Key": "load_balancing.algorithm.type",
+            "Value": "round_robin"
+        }
+    ]
+}
 ----
 
 
