@@ -179,7 +179,6 @@ fs-41dd9839
 . The container runs as user 'rundeck' with uid=1000(rundeck) gid=0(root) groups=0(root),27(sudo), and this impacts writing to the EFS volume. Create an EFS Application access point for the 'rundeck' user to write to our file mount. Make note of the "AccessPointId" for each execution of the command for use in the PV deployment.
 +
 ----
-$ aws efs create-access-point --file-system-id fs-41dd9839  --root-directory "Path=/var/lib/mysql"
 $ aws efs create-access-point --file-system-id fs-41dd9839 --posix-user Uid=1000,Gid=0 --root-directory "Path=/home/rundeck/server/logs, CreationInfo={OwnerUid=1000,OwnerGid=0,Permissions=774}"
 $ aws efs create-access-point --file-system-id fs-41dd9839 --posix-user Uid=1000,Gid=0 --root-directory "Path=/home/rundeck/server/data, CreationInfo={OwnerUid=1000,OwnerGid=0,Permissions=774}"
 ----
