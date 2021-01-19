@@ -348,13 +348,6 @@ $ kubectl create secret generic rundeckpro-admin-acl --from-file=./data/admin-ro
 $ kubectl apply -f rundeck-deployment.yaml
 ----
 
-. Create a service for connecting to our container on its exposed port
-+
-----
-$ kubectl apply -f rundeck-service.yml
-service/service-rundeck created
-----
-
 . If all goes well you should see output as such:
 +
 ----
