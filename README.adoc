@@ -13,8 +13,7 @@ This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterpr
 * link:https://github.com/bbertka/rundeck-eks#part-4---set-up-persistent-file-system[Part 4 - Setup EFS for file persistence]
 * link:https://github.com/bbertka/rundeck-eks#part-5---deploy-volumes[Part 5 - Deploy Rundeck Storage & MySQL DB Volumes]
 * link:https://github.com/bbertka/rundeck-eks#part-6---deploy-mysql[Part 6 - Deploy MySQL]
-* link:https://github.com/bbertka/rundeck-eks#part-7---setup-rundeck-ingress[Part 7 - Create Rundeck ALB]
-* link:https://github.com/bbertka/rundeck-eks#part-8---deploy-rundeck[Part 8 - Deploy Rundeck]
+* link:https://github.com/bbertka/rundeck-eks#part-7---deploy-rundeck[Part 7 - Deploy Rundeck]
 
 == Assumptions
 * You already have an AWS account with typical permissions to create EC2 resources, EKS clusters, EFS file systems
@@ -148,6 +147,38 @@ $ kubectl get pods -n kube-system
 NAME                                      READY   STATUS    RESTARTS   AGE
 alb-ingress-controller-646d767ccf-4h624   1/1     Running   0          12s
 ----
+
+.Create the Rundeck Service
++
+----
+$ kubectl apply -f rundeck-service.yml
+service/service-rundeck created
+----
+
+. Create the ALB Ingress
++
+----
+$ kubectl apply -f rundeck-ingress.yml
+ingress.extensions/rundeck-ingress created
+----
+
+. Obtain the ALB Ingress address
++
+----
+$ kubectl get ingress
+NAME              CLASS    HOSTS   ADDRESS                                                                 PORTS   AGE
+rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com   80      3d1h
+----
+
+. Add the Ingress URL to the Rundeck Deployment manifest
++
+----
+        - name: RUNDECK_GRAILS_URL
+          value: "http://58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com"
+----
+
+
+
 
 
 [#set-up-persistent-file-system]
@@ -301,34 +332,9 @@ $ kubectl create secret generic mysql-rundeckuser --from-file=./password
 $ kubectl apply -f mysql-deployment.yaml
 ----
 
-[#setup-rundeck-ingress]
-= Part 7 - Create Rundeck Ingress ALB
-Before we deploy Rundeck, we need to create an ALB and use this URL in the deployment manifest
-
-. Create the ALB Ingress
-+
-----
-$ kubectl apply -f rundeck-ingress.yml
-ingress.extensions/rundeck-ingress created
-----
-
-. Obtain the ALB Ingress address
-+
-----
-$ kubectl get ingress
-NAME              CLASS    HOSTS   ADDRESS                                                                 PORTS   AGE
-rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com   80      3d1h
-----
-
-. Add the Ingress URL to the Rundeck Deployment manifest
-+
-----
-        - name: RUNDECK_GRAILS_URL
-          value: "http://58c8349a-default-rundeckin-89de-245843308.us-east-2.elb.amazonaws.com"
-----
 
 [#deploy-rundeck]
-= Part 8 - Deploy Rundeck
+= Part 7 - Deploy Rundeck
 
 . Create Default Rundeck ACL from secrets
 +
