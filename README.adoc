@@ -239,7 +239,7 @@ gp2 (default)   kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   f
 
 
 [#deploy-volumes]
-= Part 5 - Deploy Rundeck Log Storage & MySQL DB Volumes
+= Part 5 - Deploy Volumes
 
 . Update the rundeck-pv.yml csi:volumeHandles with your coresponding EFS Filesystem ID and EFS Accesspoint IDs, RUNDECK_EFS_ID::RUNDECK_EFS_ACCESSPOINT_DATA, RUNDECK_EFS_ID::RUNDECK_EFS_ACCESSPOINT_LOGS:
 +
