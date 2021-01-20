@@ -7,7 +7,7 @@ image:images/rundeck.png[]
 == About
 This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterprise[Rundeck Pro].  After working through this lab you will have a web accessable deployment of Rundeck running on Amazon EKS Kubernetes, backed by MySQL DB and EFS. This is a workable architecture that can easily be used as a basis for deploying a fully HA production Rundeck cluster with further consideration for cluster scaling and object storage.
 
-* link:https://github.com/bbertka/rundeck-eks#part-1---requirements[Part 1 - Install Readiness]
+* link:https://github.com/bbertka/rundeck-eks#part-1---requirements[Part 1 - Requirements]
 * link:https://github.com/bbertka/rundeck-eks#part-2---deploy-eks-cluster[Part 2 - Deploy EKS Cluster]
 * link:https://github.com/bbertka/rundeck-eks#part-3---setup-cluster-ingress[Part 3 - Setup Cluster Ingress]
 * link:https://github.com/bbertka/rundeck-eks#part-4---setup-efs[Part 4 - Setup EFS File System and Acccess Points]
@@ -21,7 +21,7 @@ This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterpr
 
 
 [#requirements]
-= Part 1 - Preparing for Installation
+= Part 1 - Requirements
 If you are currently already developing with EKS and Kubernetes, feel free to skip to Part 2. Otherwise, visit link:https://github.com/bbertka/setup-eks-dev-env[Setting up your EKS Dev Environment] for instructions on how to set up your machine with the proper tools needed to continue this lab.
 
 
