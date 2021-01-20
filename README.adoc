@@ -7,11 +7,11 @@ image:images/rundeck.png[]
 == About
 This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterprise[Rundeck Pro].  After working through this lab you will have a web accessable deployment of Rundeck running on Amazon EKS Kubernetes, backed by MySQL DB and EFS. This is a workable architecture that can easily be used as a basis for deploying a fully HA production Rundeck cluster with further consideration for cluster scaling and object storage.
 
-* link:https://github.com/bbertka/rundeck-eks#part-1---preparing-for-installation[Part 1 - Install Readiness]
+* link:https://github.com/bbertka/rundeck-eks#part-1---requirements[Part 1 - Install Readiness]
 * link:https://github.com/bbertka/rundeck-eks#part-2---deploy-eks-cluster[Part 2 - Deploy EKS Cluster]
-* link:https://github.com/bbertka/rundeck-eks#part-3---setup-cluster-ingress[Part 3 - Setup ALB Ingress for your Cluster]
-* link:https://github.com/bbertka/rundeck-eks#part-4---set-up-persistent-file-system[Part 4 - Setup EFS for file persistence]
-* link:https://github.com/bbertka/rundeck-eks#part-5---deploy-volumes[Part 5 - Deploy Rundeck Storage & MySQL DB Volumes]
+* link:https://github.com/bbertka/rundeck-eks#part-3---setup-cluster-ingress[Part 3 - Setup Cluster Ingress]
+* link:https://github.com/bbertka/rundeck-eks#part-4---setup-efs[Part 4 - Setup EFS File System and Acccess Points]
+* link:https://github.com/bbertka/rundeck-eks#part-5---deploy-volumes[Part 5 - Deploy Log Storage & DB Volumes]
 * link:https://github.com/bbertka/rundeck-eks#part-6---deploy-mysql[Part 6 - Deploy MySQL]
 * link:https://github.com/bbertka/rundeck-eks#part-7---deploy-rundeck[Part 7 - Deploy Rundeck]
 
@@ -20,13 +20,13 @@ This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterpr
 * A rundeck pro license is currently issued to you, or you expect to receive one while completing this workshop.
 
 
-[#preparing-for-installation]
+[#requirements]
 = Part 1 - Preparing for Installation
 If you are currently already developing with EKS and Kubernetes, feel free to skip to Part 2. Otherwise, visit link:https://github.com/bbertka/setup-eks-dev-env[Setting up your EKS Dev Environment] for instructions on how to set up your machine with the proper tools needed to continue this lab.
 
 
 [#deploy-eks-cluster]
-= Part 2 - Deploy an Amazon EKS Cluster
+= Part 2 - Deploy EKS Cluster
 In order to deploy the Docker image for Rundeck Pro, we need an EKS cluster to work with.  There are two options for us for backing an EKS cluster, Fargate, or your own managed VPC nodes.  Since Rundeck Pro needs file persistence in order to write logs and configuration data, we are opting for a managed EC2 backend deployment to allow persistence with EFS.
 
 . Download or copy your AWS public SSH key to your current directory and make sure the permissions are set securely.
@@ -182,8 +182,8 @@ rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-
 ----
 
 
-[#set-up-persistent-file-system]
-= Part 4 - Set up Persistent File System
+[#setup-efs]
+= Part 4 - Setup EFS File System and Access Pointss
 
 . Get your VPC ID for your cluster (again)
 +
@@ -238,8 +238,8 @@ gp2 (default)   kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   f
 ----
 
 
-[#deploy-volumes]]
-= Part 5 - Deploy Rundeck Storage & MySQL DB Volumes
+[#deploy-volumes]
+= Part 5 - Deploy Rundeck Log Storage & MySQL DB Volumes
 
 . Update the rundeck-pv.yml csi:volumeHandles with your coresponding EFS Filesystem ID and EFS Accesspoint IDs, RUNDECK_EFS_ID::RUNDECK_EFS_ACCESSPOINT_DATA, RUNDECK_EFS_ID::RUNDECK_EFS_ACCESSPOINT_LOGS:
 +
@@ -318,7 +318,7 @@ rundeck-pv-claim-mysql   Bound    rundeck-pv-mysql   3Gi        RWX            e
 
 
 [#deploy-mysql]
-= Part 6 - Deploy MySQL and DB Secrets
+= Part 6 - Deploy MySQL
 
 . Create MySQL Database Password
 +
