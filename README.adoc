@@ -386,6 +386,6 @@ image:images/login.png[]
 image:images/rundeck.png[]
 
 
-== Congratulations! You have deployed a stateful Rundeck instance on EKS backed by EFS
+== Congratulations! You have deployed a stateful Rundeck cluster with HA on EKS backed by EFS
 
-Next Steps:  Setup and Configure Rundeck for Job Execution Replication (HA)
+Next Steps:  link:https://docs.rundeck.com/docs/tutorials/[Learn how to use Rundeck]
