@@ -10,8 +10,8 @@ This workshop is a walkthrough of deploying link:https://www.rundeck.com/enterpr
 * link:https://github.com/bbertka/rundeck-eks#part-1---requirements[Part 1 - Requirements]
 * link:https://github.com/bbertka/rundeck-eks#part-2---deploy-eks-cluster[Part 2 - Deploy EKS Cluster]
 * link:https://github.com/bbertka/rundeck-eks#part-3---setup-cluster-ingress[Part 3 - Setup Cluster Ingress]
-* link:https://github.com/bbertka/rundeck-eks#part-4---setup-efs[Part 4 - Setup EFS File System and Acccess Points]
-* link:https://github.com/bbertka/rundeck-eks#part-5---deploy-volumes[Part 5 - Deploy Log Storage & DB Volumes]
+* link:https://github.com/bbertka/rundeck-eks#part-4---setup-efs[Part 4 - Setup EFS]
+* link:https://github.com/bbertka/rundeck-eks#part-5---deploy-volumes[Part 5 - Deploy Volumes]
 * link:https://github.com/bbertka/rundeck-eks#part-6---deploy-mysql[Part 6 - Deploy MySQL]
 * link:https://github.com/bbertka/rundeck-eks#part-7---deploy-rundeck[Part 7 - Deploy Rundeck]
 
@@ -183,7 +183,7 @@ rundeck-ingress   <none>   *       58c8349a-default-rundeckin-89de-245843308.us-
 
 
 [#setup-efs]
-= Part 4 - Setup EFS File System and Access Pointss
+= Part 4 - Setup EFS
 
 . Get your VPC ID for your cluster (again)
 +
